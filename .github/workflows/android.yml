@@ -1,40 +1,43 @@
 name: Build Android APK
 
-on: push: branches: [ main ] workflow_dispatch:
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-jobs: build-android: runs-on: ubuntu-latest
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
 
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  - name: Setup Node.js
-    uses: actions/setup-node@v4
-    with:
-      node-version: 18
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-  - name: Setup Java
-    uses: actions/setup-java@v4
-    with:
-      distribution: 'temurin'
-      java-version: 17
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
 
-  - name: Install dependencies
-    run: npm install
+      - name: Install dependencies
+        run: npm install
 
-  - name: Install Expo CLI
-    run: npm install -g expo-cli
+      - name: Prebuild Android
+        run: npx expo prebuild --platform android --non-interactive
 
-  - name: Prebuild Android
-    run: npx expo prebuild --platform android --non-interactive
+      - name: Build APK
+        run: |
+          cd android
+          ./gradlew assembleRelease
 
-  - name: Build APK
-    run: |
-      cd android
-      ./gradlew assembleRelease
-
-  - name: Upload APK
-    uses: actions/upload-artifact@v4
-    with:
-      name: app-release-apk
-      path: android/app/build/outputs/apk/release/app-release.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
