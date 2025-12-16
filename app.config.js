@@ -2,24 +2,26 @@ export default {
   expo: {
     name: "Visi4",
     slug: "visi4",
-    version: "1.0.0",
-    orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    icon: "./assets/icon.png",
+
     splash: {
-      image: "./assets/images/splash-icon.png",
+      image: "./assets/icon.png",
       resizeMode: "contain",
-      backgroundColor: "#ffffff"
+      backgroundColor: "#000000"
     },
+
     android: {
       package: "com.freemindvision.visi4",
       adaptiveIcon: {
-        foregroundImage: "./assets/images/android-icon-foreground.png",
-        backgroundColor: "#E6F4FE"
+        foregroundImage: "./assets/icon.png",
+        backgroundColor: "#000000"
       }
     },
+
     web: {
-      favicon: "./assets/images/favicon.png"
+      favicon: "./assets/icon.png"
     },
+
     plugins: ["expo-router"]
   }
 };
