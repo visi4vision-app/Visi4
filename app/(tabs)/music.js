@@ -3,8 +3,6 @@ import { Audio } from "expo-av";
 import { useState } from "react";
 
 const tracks = [
-  { name: "Afro Beat", file: require("../../assets/music/afro.mp3") },
-  { name: "Drill", file: require("../../assets/music/drill.mp3") },
 ];
 
 export default function MusicScreen() {
