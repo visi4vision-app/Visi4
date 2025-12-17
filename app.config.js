@@ -15,9 +15,6 @@ export default {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#000000"
       }
-    },
-    ios: {
-      bundleIdentifier: "com.freemindvision.visi4"
     }
   }
 }
