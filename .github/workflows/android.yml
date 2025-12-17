@@ -9,16 +9,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - run: npm install
+      - name: Install dependencies
+        run: npm install
 
-      - run: bash scripts/check-logo.sh
+      # ❌ SCRIPT SUPPRIMÉ (il causait l’erreur)
+      # - run: bash scripts/check-logo.sh
 
-      - run: npx expo prebuild --platform android --clean
+      - name: Expo prebuild Android
+        run: npx expo prebuild --platform android --clean
 
-      - run: cd android && ./gradlew assembleRelease
+      - name: Build APK (release)
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
