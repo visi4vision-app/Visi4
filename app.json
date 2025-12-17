@@ -2,7 +2,7 @@
   "expo": {
     "name": "Visi4",
     "slug": "visi4",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "./assets/logo.png",
     "android": {
       "package": "com.freemindvision.visi4",
