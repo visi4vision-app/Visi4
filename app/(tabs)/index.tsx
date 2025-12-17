@@ -1,98 +1,106 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, FlatList, TouchableOpacity, StatusBar } from "react-native";
+import { Video } from "expo-av";
+import { Ionicons } from "@expo/vector-icons";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const { height } = Dimensions.get("window");
 
-export default function HomeScreen() {
+const videos = [
+  {
+    id: "1",
+    uri: "https://www.w3schools.com/html/mov_bbb.mp4",
+    user: "Visi4",
+    desc: "Bienvenue sur Visi4",
+    likes: 120,
+    comments: 45,
+  },
+];
+
+export default function Home() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={styles.container}>
+      <StatusBar hidden />
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <View style={styles.topBar}>
+        <Text style={styles.live}>LIVE</Text>
+        <Text style={styles.title}>Pour toi</Text>
+        <Ionicons name="search" size={22} color="white" />
+      </View>
+
+      <FlatList
+        data={videos}
+        pagingEnabled
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.page}>
+            <Video
+              source={{ uri: item.uri }}
+              style={styles.video}
+              resizeMode="cover"
+              shouldPlay
+              isLooping
+            />
+
+            <View style={styles.left}>
+              <Text style={styles.user}>@{item.user}</Text>
+              <Text style={styles.desc}>{item.desc}</Text>
+            </View>
+
+            <View style={styles.right}>
+              <Btn icon="heart" txt={item.likes} />
+              <Btn icon="chatbubble" txt={item.comments} />
+              <Btn icon="gift" txt="VSC" />
+              <Btn icon="add-circle" txt="Suivre" />
+            </View>
+          </View>
+        )}
+      />
+    </View>
+  );
+}
+
+function Btn({ icon, txt }: any) {
+  return (
+    <TouchableOpacity style={{ alignItems: "center", marginBottom: 20 }}>
+      <Ionicons name={icon} size={32} color="white" />
+      <Text style={{ color: "white", fontSize: 12 }}>{txt}</Text>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: { flex: 1, backgroundColor: "black" },
+  page: { height, width: "100%" },
+  video: { height: "100%", width: "100%" },
+
+  topBar: {
+    position: "absolute",
+    top: 40,
+    left: 10,
+    right: 10,
+    zIndex: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+
+  live: {
+    color: "white",
+    borderWidth: 1,
+    borderColor: "white",
+    paddingHorizontal: 6,
+    borderRadius: 4,
+    fontWeight: "bold",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+
+  title: { color: "white", fontSize: 18, fontWeight: "bold" },
+
+  left: { position: "absolute", bottom: 80, left: 10 },
+  user: { color: "white", fontWeight: "bold" },
+  desc: { color: "white", marginTop: 4 },
+
+  right: {
+    position: "absolute",
+    right: 10,
+    bottom: 120,
+    alignItems: "center",
   },
 });
