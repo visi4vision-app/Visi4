@@ -4,8 +4,6 @@ export default {
     slug: "visi4",
     version: "1.0.0",
 
-    owner: "freemindvision454-stack",
-
     extra: {
       eas: {
         projectId: "0579506f-74ca-4c22-ad07-744049c10b89"
