@@ -1,13 +1,15 @@
 {
+  "cli": {
+    "version": ">= 7.0.0",
+    "appVersionSource": "remote"
+  },
   "build": {
     "production": {
       "android": {
         "buildType": "app-bundle"
-      }
-    },
-    "preview": {
-      "android": {
-        "buildType": "apk"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
       }
     }
   }
