@@ -1,4 +1,4 @@
-name: Expo Android Build (EAS)
+name: Expo EAS Build
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: npm install
@@ -24,8 +24,7 @@ jobs:
       - name: Install Expo & EAS
         run: npm install -g expo-cli eas-cli
 
-      - name: Expo login
-        run: eas login --token ${{ secrets.EXPO_TOKEN }}
-
-      - name: Build Android (APK / AAB)
-        run: eas build -p android --profile production --non-interactive
+      - name: Build Android
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: eas build --platform android --non-interactive
