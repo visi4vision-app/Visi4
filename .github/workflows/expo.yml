@@ -1,4 +1,4 @@
-name: Expo EAS Build
+name: Expo EAS Build Android
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       - name: Install Expo & EAS CLI
         run: npm install -g expo eas-cli
 
-      - name: EAS Build Android
+      - name: Build Android with EAS
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas build --platform android --profile production --non-interactive
