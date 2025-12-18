@@ -5,9 +5,22 @@ export default function HomeScreen() {
   const router = useRouter();
 
   return (
-    <View style={{ flex: 1, backgroundColor: "black", justifyContent: "center", alignItems: "center" }}>
-      
-      <Text style={{ color: "white", fontSize: 32, fontWeight: "bold", marginBottom: 40 }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "black",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text
+        style={{
+          color: "white",
+          fontSize: 32,
+          fontWeight: "bold",
+          marginBottom: 40,
+        }}
+      >
         VISI4
       </Text>
 
@@ -36,10 +49,9 @@ export default function HomeScreen() {
         }}
       >
         <Text style={{ color: "white", fontSize: 18 }}>
-          🎥 Vidéos
+          🎬 Vidéos
         </Text>
       </TouchableOpacity>
-
     </View>
   );
 }
