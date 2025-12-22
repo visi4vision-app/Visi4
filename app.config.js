@@ -1,5 +1,7 @@
 export default {
   expo: {
+    sdkVersion: "51.0.0",
+
     name: "Visi4",
     slug: "visi4",
     version: "1.0.0",
@@ -32,4 +34,4 @@ export default {
       bundleIdentifier: "com.freemindvision.visi4"
     }
   }
-};
+}
