@@ -21,6 +21,7 @@
     "dotenv": "^17.2.3",
     "expo": "~54.0.30",
     "expo-av": "~14.0.7",
+    "expo-build-properties": "^1.0.10",
     "expo-camera": "~15.0.16",
     "expo-constants": "~18.0.12",
     "expo-file-system": "~19.0.21",
