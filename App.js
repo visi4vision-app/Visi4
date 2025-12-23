@@ -24,3 +24,4 @@ import HomeScreen from "./screens/HomeScreen";
 export default function App() {
   return <HomeScreen />;
 }
+console.log('Tencent SDK:', process.env.TENCENT_SDK_APP_ID);
