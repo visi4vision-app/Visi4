@@ -1,3 +1,17 @@
+export function canSpend(balance, price) {
+  return balance >= price;
+}
+
+export function spendVisiCoin(balance, price) {
+  if (balance < price) {
+    throw new Error("VisiCoin insuffisant");
+  }
+  return balance - price;
+}
+
+export function earnVisiCoin(balance, amount) {
+  return balance + amount;
+}
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firestore";
 
