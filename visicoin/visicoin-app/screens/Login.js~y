@@ -1,0 +1,23 @@
+import { View, TextInput, Button } from "react-native";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import { useState } from "react";
+
+export default function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const login = async () => {
+    await signInWithEmailAndPassword(auth, email, password);
+    navigation.replace("Home");
+  };
+
+  return (
+    <View>
+      <TextInput placeholder="Email" onChangeText={setEmail} />
+      <TextInput placeholder="Mot de passe" secureTextEntry onChangeText={setPassword} />
+      <Button title="Connexion" onPress={login} />
+    </View>
+  );
+}
+

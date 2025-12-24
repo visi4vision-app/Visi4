@@ -2,15 +2,22 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const admin = require("firebase-admin");
 
-// ✅ Firebase déjà initialisé ici
-const { admin, db } = require("./firestore/db");
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    }),
+  });
+}
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔐 Middleware vérification utilisateur
 async function verifyUser(req, res, next) {
   const token = req.headers.authorization?.split("Bearer ")[1];
   if (!token) {
@@ -31,7 +38,7 @@ app.get("/", (req, res) => {
   res.json({ status: "Visi4 backend running" });
 });
 
-// 💸 Retrait (logique à compléter plus tard)
+// 💸 Retrait sécurisé
 app.post("/withdraw", verifyUser, async (req, res) => {
   const { amount } = req.body;
   const userId = req.user.uid;
