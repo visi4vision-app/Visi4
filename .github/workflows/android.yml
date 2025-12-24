@@ -2,6 +2,7 @@ name: Build Android APK (EAS)
 
 on:
   workflow_dispatch:
+  workflow_dispatch:
   push:
     branches:
       - main
