@@ -2,8 +2,7 @@ name: Build Android APK (Signed)
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build-android:
@@ -12,7 +11,6 @@ jobs:
     env:
       CI: 1
       EXPO_NO_TELEMETRY: 1
-      NODE_OPTIONS: --max_old_space_size=4096
 
     steps:
       - uses: actions/checkout@v4
@@ -26,38 +24,32 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
+      - run: npm install --legacy-peer-deps
 
-      - name: Expo prebuild (clean)
-        run: npx expo prebuild --clean
+      - run: npx expo prebuild --clean
 
-      # ✅ LA VRAIE CORRECTION EXPO
-      - name: Force Kotlin version for Expo
+      - name: Fix KSP for Expo 54
         run: |
-          echo "expo.kotlinVersion=2.0.21" >> android/gradle.properties
-          echo "kotlin.version=2.0.21" >> android/gradle.properties
+          sed -i 's/com.google.devtools.ksp:.*/com.google.devtools.ksp:1.9.25-1.0.20"/g' android/build.gradle || true
+          sed -i 's/com.google.devtools.ksp:.*/com.google.devtools.ksp:1.9.25-1.0.20"/g' android/settings.gradle || true
           rm -rf android/.gradle android/build
 
-      - name: Decode Android keystore
+      - name: Decode keystore
         run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/visi4-release.jks
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.jks
 
       - name: Configure signing
         run: |
           cat >> android/gradle.properties <<EOF
-          MYAPP_UPLOAD_STORE_FILE=visi4-release.jks
+          MYAPP_UPLOAD_STORE_FILE=release.jks
           MYAPP_UPLOAD_STORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           MYAPP_UPLOAD_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}
           MYAPP_UPLOAD_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}
           EOF
 
-      - name: Build signed APK
-        run: |
-          cd android
-          ./gradlew assembleRelease --no-daemon
+      - run: cd android && ./gradlew assembleRelease --no-daemon
 
       - uses: actions/upload-artifact@v4
         with:
-          name: visi4-release-apk
+          name: app-release-apk
           path: android/app/build/outputs/apk/release/app-release.apk
