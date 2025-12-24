@@ -24,16 +24,18 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Install deps
+      - name: Install dependencies
         run: npm install --legacy-peer-deps
+
+      # 🔥 ÉTAPE CRITIQUE AVANT PREBUILD
+      - name: Force Kotlin version for Expo
+        run: |
+          mkdir -p android
+          echo "android.kotlinVersion=2.1.10" > android/gradle.properties
+          echo "kotlin.version=2.1.10" >> android/gradle.properties
 
       - name: Expo prebuild
         run: npx expo prebuild --clean --non-interactive
-
-      - name: Force Kotlin compatible with Expo KSP
-        run: |
-          echo "kotlin.version=2.1.10" >> android/gradle.properties
-          sed -i 's/1.9.25/2.1.10/g' android/build.gradle android/settings.gradle android/app/build.gradle || true
 
       - name: Decode keystore
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.jks
