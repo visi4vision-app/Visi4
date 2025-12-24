@@ -23,7 +23,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -32,16 +31,10 @@ jobs:
           java-version: 17
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Expo prebuild (clean)
         run: npx expo prebuild --clean --non-interactive
-
-      # 🔥 FIX CRITIQUE : forcer une version Kotlin compatible Expo/KSP
-      - name: Force Kotlin 2.0.21
-        run: |
-          sed -i 's/1.9.25/2.0.21/g' android/build.gradle android/gradle.properties android/settings.gradle || true
-          grep kotlinVersion -n android/build.gradle android/gradle.properties || true
 
       - name: Decode Android keystore
         run: |
