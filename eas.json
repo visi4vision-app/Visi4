@@ -6,8 +6,8 @@
   "build": {
     "production": {
       "android": {
-        "buildType": "apk",
-        "credentialsSource": "local"
+        "buildType": "app-bundle",
+        "credentialsSource": "remote"
       }
     }
   }
