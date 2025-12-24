@@ -24,15 +24,18 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - run: npm install --legacy-peer-deps
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
 
-      - run: npx expo prebuild --clean
-
-      - name: Fix KSP for Expo 54
+      - name: Expo prebuild (clean, no KSP)
         run: |
-          sed -i 's/com.google.devtools.ksp:.*/com.google.devtools.ksp:1.9.25-1.0.20"/g' android/build.gradle || true
-          sed -i 's/com.google.devtools.ksp:.*/com.google.devtools.ksp:1.9.25-1.0.20"/g' android/settings.gradle || true
-          rm -rf android/.gradle android/build
+          rm -rf android
+          npx expo prebuild --clean --non-interactive
+
+      - name: Disable KSP completely
+        run: |
+          sed -i '/ksp/d' android/build.gradle android/settings.gradle android/app/build.gradle || true
+          sed -i '/com.google.devtools.ksp/d' android/build.gradle android/settings.gradle || true
 
       - name: Decode keystore
         run: |
@@ -47,7 +50,8 @@ jobs:
           MYAPP_UPLOAD_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}
           EOF
 
-      - run: cd android && ./gradlew assembleRelease --no-daemon
+      - name: Build APK
+        run: cd android && ./gradlew assembleRelease --no-daemon
 
       - uses: actions/upload-artifact@v4
         with:
