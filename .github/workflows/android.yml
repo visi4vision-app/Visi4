@@ -35,3 +35,4 @@ jobs:
         run: eas build -p android --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+# trigger build Wed Dec 24 19:01:43 GMT 2025
