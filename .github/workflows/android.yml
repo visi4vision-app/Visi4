@@ -2,8 +2,7 @@ name: Build Android APK (EAS)
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -14,11 +13,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Node 20 (REQUIRED)
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
@@ -26,12 +24,16 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli
 
-      - name: Verify Expo auth
+      - name: Expo auth
         run: eas whoami
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Build APK with EAS
+      - name: Build APK with EAS (using existing keystore)
         run: eas build -p android --profile production --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
