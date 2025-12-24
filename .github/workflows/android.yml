@@ -1,56 +1,35 @@
-name: Build Android APK
+name: Build Android APK (EAS)
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build-android:
     runs-on: ubuntu-latest
 
-    env:
-      CI: true
-      EXPO_NO_TELEMETRY: 1
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      # 🔥 ÉTAPE CRITIQUE AVANT PREBUILD
-      - name: Force Kotlin version for Expo
-        run: |
-          mkdir -p android
-          echo "android.kotlinVersion=2.1.10" > android/gradle.properties
-          echo "kotlin.version=2.1.10" >> android/gradle.properties
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
 
-      - name: Expo prebuild
-        run: npx expo prebuild --clean --non-interactive
+      - name: Login to Expo
+        run: eas whoami
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Decode keystore
-        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.jks
-
-      - name: Configure signing
-        run: |
-          echo "MYAPP_UPLOAD_STORE_FILE=release.jks" >> android/gradle.properties
-          echo "MYAPP_UPLOAD_STORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/gradle.properties
-          echo "MYAPP_UPLOAD_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/gradle.properties
-          echo "MYAPP_UPLOAD_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/gradle.properties
-
-      - name: Build APK
-        run: cd android && ./gradlew assembleRelease --no-daemon
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: app-release-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+      - name: Build APK with EAS
+        run: eas build -p android --profile preview --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
