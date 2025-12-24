@@ -37,6 +37,12 @@ jobs:
       - name: Expo prebuild (clean)
         run: npx expo prebuild --clean --non-interactive
 
+      # 🔥 FIX CRITIQUE : forcer une version Kotlin compatible Expo/KSP
+      - name: Force Kotlin 2.0.21
+        run: |
+          sed -i 's/1.9.25/2.0.21/g' android/build.gradle android/gradle.properties android/settings.gradle || true
+          grep kotlinVersion -n android/build.gradle android/gradle.properties || true
+
       - name: Decode Android keystore
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/visi4-release.jks
