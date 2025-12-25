@@ -1,10 +1,13 @@
 export default {
   expo: {
-    sdkVersion: "51.0.0",
+    owner: "freemindvision_app",
 
     name: "Visi4",
     slug: "visi4",
-    version: "1.0.0",
+    version: "1.0.4",
+    sdkVersion: "51.0.0",
+
+    icon: "./assets/logo.png",
 
     extra: {
       eas: {
@@ -13,8 +16,6 @@ export default {
     },
 
     assetBundlePatterns: ["assets/*"],
-
-    icon: "./assets/icon.png",
 
     splash: {
       image: "./assets/splash.png",
@@ -25,7 +26,7 @@ export default {
     android: {
       package: "com.freemindvision.visi4",
       adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png",
+        foregroundImage: "./assets/logo.png",
         backgroundColor: "#000000"
       }
     },
