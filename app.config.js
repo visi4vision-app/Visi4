@@ -9,12 +9,6 @@ export default {
 
     icon: "./assets/logo.png",
 
-    extra: {
-      eas: {
-        projectId: "48700c55-8bd7-49c7-86d9-9a589f3a5c05"
-      }
-    },
-
     assetBundlePatterns: ["assets/*"],
 
     splash: {
