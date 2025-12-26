@@ -1,4 +1,4 @@
-name: Build Android APK (EAS)
+name: Build Android APK (EAS Preview)
 
 on:
   push:
@@ -13,27 +13,23 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
 
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
+      - name: Install Expo & EAS CLI
+        run: npm install -g expo-cli eas-cli
 
-      - name: Expo auth
-        run: eas whoami
+      - name: Verify Expo authentication
+        run: npx expo whoami
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Build APK with EAS (using existing keystore)
-        run: eas build -p android --profile production --non-interactive
+      - name: Build Android (preview)
+        run: npx eas build -p android --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
