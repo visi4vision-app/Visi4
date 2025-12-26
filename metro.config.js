@@ -1,10 +1,15 @@
+
 const { getDefaultConfig } = require("expo/metro-config");
 
 const config = getDefaultConfig(__dirname);
 
-// Node 18 compatible (NO toReversed)
+// ✅ Node 18 / EAS compatible (no toReversed)
 if (Array.isArray(config.resolver.assetExts)) {
-  config.resolver.assetExts = [...config.resolver.assetExts].reverse();
+  config.resolver.assetExts = [...config.resolver.assetExts];
 }
 
-module.exports = config;
+if (Array.isArray(config.resolver.sourceExts)) {
+  config.resolver.sourceExts = [...config.resolver.sourceExts];
+}
+
+module.exports = config;	
