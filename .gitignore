@@ -1,9 +1,4 @@
 .env
-node_modules
-logs
-*.log
-dist
-build
+.env
 serviceAccountKey.json
 *.jks
-.env
