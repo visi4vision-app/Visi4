@@ -1,63 +1,32 @@
-const functions = require("firebase-functions");
-const cloudinary = require("cloudinary").v2;
+/**
+ * Import function triggers from their respective submodules:
+ *
+ * const {onCall} = require("firebase-functions/v2/https");
+ * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
+ *
+ * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ */
 
-/* ===== CONFIG CLOUDINARY ===== */
-cloudinary.config({
-  cloud_name: functions.config().cloudinary.cloud_name,
-  api_key: functions.config().cloudinary.api_key,
-  api_secret: functions.config().cloudinary.api_secret,
-});
+const {setGlobalOptions} = require("firebase-functions");
+const {onRequest} = require("firebase-functions/https");
+const logger = require("firebase-functions/logger");
 
-/* ===== UPLOAD VIDÉO ===== */
-exports.uploadVideo = functions.https.onRequest(async (req, res) => {
-  try {
-    const { videoUrl } = req.body;
+// For cost control, you can set the maximum number of containers that can be
+// running at the same time. This helps mitigate the impact of unexpected
+// traffic spikes by instead downgrading performance. This limit is a
+// per-function limit. You can override the limit for each function using the
+// `maxInstances` option in the function's options, e.g.
+// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
+// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
+// functions should each use functions.runWith({ maxInstances: 10 }) instead.
+// In the v1 API, each function can only serve one request per container, so
+// this will be the maximum concurrent request count.
+setGlobalOptions({ maxInstances: 10 });
 
-    const result = await cloudinary.uploader.upload(videoUrl, {
-      resource_type: "video",
-      folder: "visi4/videos",
-    });
+// Create and deploy your first functions
+// https://firebase.google.com/docs/functions/get-started
 
-    res.json({
-      success: true,
-      url: result.secure_url,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-/* ===== FEED (ALGORITHME) ===== */
-exports.getFeed = functions.https.onRequest((req, res) => {
-  const { interests = [] } = req.body;
-
-  const feed = interests.map((tag, i) => ({
-    id: i,
-    tag,
-    score: Math.random() * 100,
-  }));
-
-  feed.sort((a, b) => b.score - a.score);
-  res.json(feed);
-});
-
-/* ===== INTERACTIONS ===== */
-exports.likeVideo = functions.https.onRequest((req, res) => {
-  res.json({ status: "video liked" });
-});
-
-exports.commentVideo = functions.https.onRequest((req, res) => {
-  res.json({ status: "comment added" });
-});
-
-exports.registerView = functions.https.onRequest((req, res) => {
-  res.json({ status: "view recorded" });
-});
-
-/* ===== WEBRTC SIGNALING ===== */
-exports.signaling = functions.https.onRequest((req, res) => {
-  res.json({
-    type: "signal",
-    data: req.body,
-  });
-});
+// exports.helloWorld = onRequest((request, response) => {
+//   logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });

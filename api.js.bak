@@ -1,0 +1,69 @@
+import { brainGlobal } from "./ai/brainGlobal.js";
+import { notifyIntl } from "./ai/notificationsIntl.js";
+import { monetizeIntl } from "./ai/monetizationIntl.js";
+
+import "dotenv/config";
+import express from "express";
+
+import { rankFeed } from "./ai/algo/rankFeed.js";
+import { smartNotify } from "./ai/notifications.js";
+import { monetize } from "./ai/monetization.js";
+import { rateLimit } from "./ai/security.js";
+import { brainWithMemory } from "./ai/memory/brainWithMemory.js";
+
+const app = express();
+app.use(express.json());
+app.use(express.static("public"))
+
+app.post("/feed", (req, res) => {
+  const { user, posts } = req.body;
+  res.json(rankFeed(posts, user));
+});
+
+app.post("/notify", async (req, res) => {
+  try {
+    rateLimit(req.body.user.id);
+    const r = await smartNotify(req.body.user, req.body.event);
+    res.json({ message: r });
+  } catch (e) {
+    res.status(429).json({ error: e.message });
+  }
+});
+
+app.post("/monetize", async (req, res) => {
+  const r = await monetize(req.body);
+  res.json({ strategy: r });
+});
+
+app.post("/ai", async (req, res) => {
+  const r = await brainWithMemory(req.body.userId, req.body.prompt);
+  res.json({ result: r });
+});
+
+app.post("/global", async (req,res)=>{
+  try {
+    res.json({
+      notification: notifyIntl(req.body.user,"new_video"),
+      monetization: monetizeIntl(req.body.user)
+    });
+  } catch(e) {
+    res.status(500).json({error:e.message});
+  }
+});
+
+app.post("/global", async (req,res)=>{
+  try {
+    const { user, prompt } = req.body;
+    res.json({
+      ai: await brainGlobal(user, prompt),
+      notification: notifyIntl(user, "new_video"),
+      monetization: monetizeIntl(user)
+    });
+  } catch(e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.listen(3000, "0.0.0.0", () => {
+  console.log("🚀 Visi4 FULL AI ENGINE ONLINE (Android OK)");
+});

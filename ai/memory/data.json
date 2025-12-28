@@ -1,0 +1,36 @@
+{
+  "users": {
+    "user1": {
+      "history": [
+        {
+          "action": "watch",
+          "theme": "startup",
+          "time": 120,
+          "ts": 1766958808454
+        },
+        {
+          "action": "watch",
+          "theme": "startup",
+          "time": 120,
+          "ts": 1766958815299
+        },
+        {
+          "action": "watch",
+          "theme": "startup",
+          "time": 180,
+          "ts": 1766958993432
+        },
+        {
+          "action": "like",
+          "postId": 42,
+          "ts": 1766959003538
+        },
+        {
+          "action": "share",
+          "postId": 42,
+          "ts": 1766959016518
+        }
+      ]
+    }
+  }
+}
