@@ -1,5 +1,3 @@
-import LikeButton from "../components/LikeButton";
-import Comments from "../components/Comments";
 import Animated, { SlideInUp } from 'react-native-reanimated';
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
@@ -10,19 +8,12 @@ import { gifts } from "../services/visicoin/gifts.service";
 export default function LiveScreen() {
   const uidViewer = "viewer1";
   const uidCreator = "creator1";
-
   const [message, setMessage] = useState("");
-  const [views, setViews] = useState(0);
 
   useEffect(() => {
     startLive("room-1");
-    setViews(v => v + 1);
-    credit(uidViewer, 100);
-
-    return () => {
-      stopLive();
-      setViews(v => Math.max(0, v - 1));
-    };
+    credit(uidViewer, 100); // crédit test
+    return () => stopLive();
   }, []);
 
   const sendGift = (gift) => {
@@ -37,12 +28,7 @@ export default function LiveScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "black", padding: 20 }}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={{ color: "red", fontSize: 18 }}>● LIVE</Text>
-        <Text style={{ color: "white", marginLeft: 12 }}>
-          👁 {views}
-        </Text>
-      </View>
+      <Text style={{ color: "white", fontSize: 18 }}>🔴 LIVE</Text>
 
       {gifts.map((g) => (
         <TouchableOpacity key={g.id} onPress={() => sendGift(g)}>
@@ -52,11 +38,7 @@ export default function LiveScreen() {
         </TouchableOpacity>
       ))}
 
-      <Text style={{ color: "white", marginTop: 20 }}>
-<LikeButton />
-<Comments />
-        {message}
-      </Text>
+      <Text style={{ color: "white", marginTop: 20 }}>{message}</Text>
     </View>
   );
 }
