@@ -1,20 +1,23 @@
-export default ({ config }) => ({
-  ...config,
-  name: "Visi4",
-  slug: "visi4",
-  owner: "freemindvision_app",
+export default ({ config }) => {
+  return {
+    ...config,
 
-  android: {
-    package: "com.freemindvision.visi4"
-  },
+    name: "Visi4",
+    slug: "visi4",
+    owner: "visi4vision-app",
 
-  ios: {
-    bundleIdentifier: "com.freemindvision.visi4"
-  },
+    android: {
+      package: "com.visi4vision.visi4"
+    },
 
-  extra: {
-    eas: {
-      projectId: "48700c55-8bd7-49c7-86d9-9a589f3a5c05"
+    ios: {
+      bundleIdentifier: "com.visi4vision.visi4"
+    },
+
+    extra: {
+      eas: {
+        projectId: "ecd4ae36-6f94-4cc0-aa2e-efc39ed3ea49"
+      }
     }
-  }
-});
+  };
+};
