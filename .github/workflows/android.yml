@@ -1,15 +1,15 @@
-name: Expo Android Build
+name: Build Android APK (Expo EAS)
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build:
+  build-apk:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -21,15 +21,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Expo CLI
-        run: npm install -g expo-cli
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
 
-      - name: Expo Prebuild (non-interactive)
+      - name: Build APK (EAS)
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: npx expo prebuild --non-interactive
-
-      - name: Build Android
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: npx expo run:android --no-bundler
+        run: eas build --platform android --profile apk --non-interactive
