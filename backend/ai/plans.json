@@ -1,0 +1,5 @@
+{
+  "free": { "tokens": 50 },
+  "pro": { "tokens": 500 },
+  "business": { "tokens": 5000 }
+}

@@ -2,3 +2,8 @@
 .env
 serviceAccountKey.json
 *.jks
+node_modules/
+.expo/
+.env
+.env.*
+npm-debug.log*
