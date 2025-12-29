@@ -1,37 +1,27 @@
-name: Build Android APK (EAS Preview)
+name: Expo Android Build
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [main]
 
 jobs:
-  build-android:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js (Node 20)
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 18
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
 
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
+      - name: Install Expo
+        run: npm install -g expo-cli
 
-      - name: Verify Expo authentication
-        run: eas whoami
+      - name: Build Android
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Build Android APK (preview)
-        run: eas build -p android --profile preview --non-interactive
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx expo prebuild && npx expo run:android
