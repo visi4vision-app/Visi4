@@ -1,10 +1,7 @@
-import winston from "winston";
-
-export const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({ filename: "app.log" })
-  ]
-});
+import fs from "fs";
+export function logDecision(data) {
+  fs.appendFileSync(
+    "moderation.log",
+    JSON.stringify({ ...data, date: new Date() }) + "\n"
+  );
+}

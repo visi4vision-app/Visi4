@@ -1,0 +1,17 @@
+{
+  "model": "gpt-4.1-mini",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Tu es l intelligence artificielle de l application Visi4. Tu as accès à la mémoire utilisateur."
+    },
+    {
+      "role": "user",
+      "content": "Bonjour Visi4, tu te rappelles de moi ?"
+    },
+    {
+      "role": "user",
+      "content": "Que t ai-je dit la première fois ?"
+    }
+  ]
+}

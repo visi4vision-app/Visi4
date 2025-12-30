@@ -1,0 +1,34 @@
+{
+  "actions": [
+    {
+      "decision": "BLOCK",
+      "date": "2025-12-30T11:23:46.891Z"
+    },
+    {
+      "decision": "BLOCK",
+      "date": "2025-12-30T11:25:01.943Z"
+    },
+    {
+      "decision": "BLOCK",
+      "date": "2025-12-30T11:25:04.075Z"
+    },
+    {
+      "decision": "BLOCK",
+      "date": "2025-12-30T11:30:38.217Z"
+    },
+    {
+      "decision": "BLOCK",
+      "date": "2025-12-30T11:30:40.070Z"
+    }
+  ],
+  "score": -150,
+  "status": "BANNED",
+  "coins": -60,
+  "deal": {
+    "boost": true,
+    "revenueShare": "80/20"
+  },
+  "strikes": 2,
+  "aiCount": 3,
+  "premium": false
+}

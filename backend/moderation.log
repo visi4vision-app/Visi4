@@ -1,0 +1,2 @@
+{"uid":"u1","country":"FR","language":"fr","content":"Bonjour tout le monde","decision":"ALLOW","reason":"Message courtois et approprié.","date":"2025-12-30T11:02:36.796Z"}
+{"uid":"u1","country":"FR","language":"fr","content":"contenu pornographique explicite","decision":"BLOCK","reason":"Contenu explicitement pornographique, interdit par les règles.","date":"2025-12-30T11:02:48.823Z"}
