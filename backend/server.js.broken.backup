@@ -1,0 +1,105 @@
+const PORT = process.env.PORT || 3002;
+pi\/ai"/!d
+import aiRouter from "./routes/ai.js";
+pi\/ai"/!d
+import adminTension from "./routes/admin/tension.js";
+pi\/ai"/!d
+import videoModerate from "./routes/videoModerate.js";
+pi\/ai"/!d
+import liveAudio from "./routes/liveAudio.js";
+pi\/ai"/!d
+import liveModerate from "./routes/liveModerate.js";
+pi\/ai"/!d
+import express from "express";
+pi\/ai"/!d
+import cors from "cors";
+pi\/ai"/!d
+import dotenv from "dotenv";
+pi\/ai"/!d
+import aiHub from "./ai/index.js";
+pi\/ai"/!d
+
+pi\/ai"/!d
+dotenv.config();
+pi\/ai"/!d
+
+pi\/ai"/!d
+const app = express();
+pi\/ai"/!d
+app.use(cors());
+pi\/ai"/!d
+app.use(express.json());
+pi\/ai"/!d
+app.use("/api/ai", aiRouter);
+pi\/ai"/!d
+app.use("/api/ai", aiRouter);
+pi\/ai"/!d
+app.use("/api/video/moderate", videoModerate);
+pi\/ai"/!d
+app.use("/api/admin", adminTension);
+pi\/ai"/!d
+app.use("/api/live/moderate", liveAudio);
+pi\/ai"/!d
+app.use("/api/admin", adminTension);
+pi\/ai"/!d
+app.use("/api", liveModerate);
+pi\/ai"/!d
+app.use("/api/admin", adminTension);
+pi\/ai"/!d
+
+pi\/ai"/!d
+app.post("/api/ai/chat", async (req, res) => {
+pi\/ai"/!d
+  try {
+pi\/ai"/!d
+    const { uid, text, lang } = req.body;
+pi\/ai"/!d
+    const result = await aiHub(uid, text, lang);
+pi\/ai"/!d
+    res.json(result);
+pi\/ai"/!d
+  } catch (err) {
+pi\/ai"/!d
+    console.error(err);
+pi\/ai"/!d
+    res.status(500).json({ error: "Erreur IA centrale" });
+pi\/ai"/!d
+  }
+pi\/ai"/!d
+});
+pi\/ai"/!d
+
+pi\/ai"/!d
+  console.log("🚀 Visi4 backend lancé sur le port", PORT);
+pi\/ai"/!d
+});
+pi\/ai"/!d
+
+pi\/ai"/!d
+import aiRoute from "./functions/aiRoute.js";
+pi\/ai"/!d
+app.use("/api/ai", aiRoute);
+pi\/ai"/!d
+
+pi\/ai"/!d
+
+pi\/ai"/!d
+const PORT = process.env.PORT || 3002;
+pi\/ai"/!d
+
+pi\/ai"/!d
+app.listen(PORT, () => {
+pi\/ai"/!d
+  console.log("Visi4 backend lancé sur le port", PORT);
+pi\/ai"/!d
+});
+pi\/ai"/!d
+
+pi\/ai"/!d
+
+const PORT = process.env.PORT || 3002;
+
+app.listen(PORT, () => {
+  console.log("Visi4 backend lancé sur le port", PORT);
+});
+

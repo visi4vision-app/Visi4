@@ -1,8 +1,8 @@
-import { remember } from '../memory/userMemory.js';
-
-export function onShare(userId, postId) {
-  remember(userId, {
-    action: 'share',
+export default async function onShare({ uid, postId }) {
+  return {
+    ok: true,
+    action: "share",
+    uid,
     postId
-  });
+  };
 }

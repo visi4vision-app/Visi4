@@ -1,8 +1,8 @@
-import { remember } from '../memory/userMemory.js';
-
-export function onLike(userId, postId) {
-  remember(userId, {
-    action: 'like',
+export default async function onLike({ uid, postId }) {
+  return {
+    ok: true,
+    action: "like",
+    uid,
     postId
-  });
+  };
 }

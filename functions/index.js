@@ -1,32 +1,47 @@
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+
+admin.initializeApp();
+
+const USD_TO_VISICOIN = 100;
+
 /**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ * Crédit VisiCoin (fonction centrale)
  */
+async function credit(uid, usd, ref) {
+  const vc = Math.floor(usd * USD_TO_VISICOIN);
+  const w = admin.firestore().collection('wallet').doc(uid);
 
-const {setGlobalOptions} = require("firebase-functions");
-const {onRequest} = require("firebase-functions/https");
-const logger = require("firebase-functions/logger");
+  await admin.firestore().runTransaction(async (tx) => {
+    const s = await tx.get(w);
+    const balance = s.exists ? s.data().balance || 0 : 0;
+    const totalIn = s.exists ? s.data().totalIn || 0 : 0;
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+    tx.set(
+      w,
+      {
+        balance: balance + vc,
+        totalIn: totalIn + vc,
+        updatedAt: Date.now(),
+      },
+      { merge: true }
+    );
+  });
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+  await admin.firestore().collection('payments').add({
+    uid,
+    usd,
+    vc,
+    ref,
+    status: 'ok',
+    createdAt: Date.now(),
+  });
+}
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+/**
+ * Test HTTP
+ */
+exports.testCredit = functions.https.onRequest(async (req, res) => {
+  await credit('TEST_UID', 10, 'manual-test');
+  res.send('OK CREDITED');
+});

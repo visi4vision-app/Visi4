@@ -1,6 +1,6 @@
 import { brain } from '../brain.js';
 
-export async function aiRank(user, posts) {
+export default async function aiRank(user, posts) {
   const prompt = `
 Classe ces contenus pour l'utilisateur.
 Utilisateur: ${JSON.stringify(user)}

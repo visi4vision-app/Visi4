@@ -1,0 +1,10 @@
+{
+  "name": "visi4-ia-aws",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.6.0"
+  }
+}
