@@ -12,3 +12,8 @@ npm-debug.log*
 .env
 functions/serviceAccount.json
 serviceAccount.json
+
+# Secrets
+.env
+functions/serviceAccount.json
+serviceAccount.json
