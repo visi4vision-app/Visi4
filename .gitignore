@@ -7,3 +7,8 @@ node_modules/
 .env
 .env.*
 npm-debug.log*
+
+# Secrets
+.env
+functions/serviceAccount.json
+serviceAccount.json
