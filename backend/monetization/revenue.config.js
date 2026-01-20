@@ -1,0 +1,5 @@
+module.exports = {
+  CREATOR_PERCENT: 0.50,
+  APP_PERCENT: 0.45,
+  VIEWER_PERCENT: 0.05
+};

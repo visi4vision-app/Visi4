@@ -17,3 +17,4 @@ serviceAccount.json
 .env
 functions/serviceAccount.json
 serviceAccount.json
+backend/firebase/serviceAccountKey.json
