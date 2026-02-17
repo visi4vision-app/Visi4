@@ -1,3 +1,4 @@
+
 name: Build APK (Expo EAS)
 
 on:
@@ -18,23 +19,31 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Install Expo & EAS CLI
-        run: npm install -g expo-cli eas-cli
+      # Expo CLI moderne
+      - name: Install Expo and EAS CLI
+        run: npm install -g expo eas-cli
 
-      - name: Verify Expo authentication
+      # Login Expo avec token GitHub
+      - name: Login to Expo
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: expo whoami || true
+        run: npx expo whoami
 
+      # Config EAS obligatoire sinon erreur appVersionSource
+      - name: Configure EAS
+        run: npx eas build:configure --non-interactive || true
+
+      # Build APK Android
       - name: Build APK with EAS
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
-          eas build \
+          npx eas build \
             --platform android \
             --profile apk \
             --non-interactive \
