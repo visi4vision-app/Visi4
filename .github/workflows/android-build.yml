@@ -21,7 +21,9 @@ jobs:
         run: npm install
 
       - name: Install Expo CLI
+- name: Install EAS CLI
+  run: npm install -g eas-cli
         run: npm install -g expo-cli
 
       - name: Build Android
-        run: npx eas build -p android --profile production --non-interactive
+        run: eas build -p android --profile production --non-interactive
