@@ -24,4 +24,4 @@ jobs:
         run: npm install -g expo-cli
 
       - name: Build Android
-        run: npx expo prebuild && npx eas build -p android --profile production --non-interactive
+        run: npx eas build -p android --profile production --non-interactive
